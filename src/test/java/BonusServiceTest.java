@@ -1,61 +1,54 @@
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class BonusServiceTest {
 
-
     @Test
-    public void testRegisteredUnderLimit() {
+   public void shouldCalculateForRegisteredAndUnderLimit() {
         BonusService service = new BonusService();
-
         long amount = 1000;
         boolean registered = true;
-        long actual = service.calcBonus(amount, registered);
-        System.out.println("Bonus calculated: " + actual);
+        long expected = 30;
 
+        long actual = service.calculate(amount, registered);
 
-        amount = 10000;
-        registered = true;
-        actual = service.calcBonus(amount, registered);
-        System.out.println("1. " + registered + "== ? == " + actual);
-
-        amount = 5000;
-        registered = false;
-        actual = service.calcBonus(amount, registered);
-        System.out.println("2. " + registered + "== ? == " + actual);
-
-
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void testUnregisteredUnderLimit() {
-        BonusService service = new BonusService();
-        long amount = 2000;
-        boolean registered = false;
-        long actual = service.calcBonus(amount, registered);
-        System.out.println("Bonus calculated: " + actual);
-
-    }
-
-    @Test
-
-
     public void shouldCalculateForRegisteredAndOverLimit() {
         BonusService service = new BonusService();
-        long amount = 10000;
-        boolean registered = true;
-        long actual = service.calcBonus(amount, registered);
-        System.out.println("Bonus calculated: " + actual);
 
+        long amount = 1_000_000;
+        boolean registered = true;
+        long expected = 500;
+
+        long actual = service.calculate(amount, registered);
+
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldCalculateForOverLimit() {
+    public void shouldCalculateForNotRegisteredAndUnderLimit() {
         BonusService service = new BonusService();
+
         long amount = 1000;
         boolean registered = false;
-        long actual = service.calcBonus(amount, registered);
-        System.out.println("Bonus calculated: " + actual);
+        long expected = 10;
+
+        long actual = service.calculate(amount, registered);
+
+        Assertions.assertEquals(expected, actual);
     }
 
+    @Test
+    public void shouldCalculateForNotRegisteredAndOverLimit() {
+        BonusService service = new BonusService();
 
+        long amount = 1_000_000;
+        boolean registered = false;
+        long expected = 500;
+        long actual = service.calculate(amount, registered);
+        Assertions.assertEquals(expected, actual);
+    }
 }
